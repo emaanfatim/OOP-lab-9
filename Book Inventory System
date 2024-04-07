@@ -1,0 +1,98 @@
+ import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    private String title;
+    private String author;
+    private double price;
+    private int quantity;
+
+    public Book(String title, String author, double price, int quantity) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    // Getters and setters
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+public void setPrice(double price) {
+        this.price = price;
+    }
+
+    
+public class BookInventorySystem {
+    private ArrayList<Book> bookList = new ArrayList<>();
+    private Scanner scanner;
+
+    public BookInventorySystem() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void addBook(String title, String author, double price, int quantity) {
+        if (title == null || author == null || title.isEmpty() || author.isEmpty() || price <= 0 || quantity <= 0) {
+            throw new IllegalArgumentException("Invalid input parameters for adding a book.");
+        }
+        bookList.add(new Book(title, author, price, quantity));
+    }
+
+    public void removeBook(String title) {
+        boolean removed = bookList.removeIf(book -> book.getTitle().equals(title));
+        if (!removed) {
+            throw new IllegalArgumentException("Book with title " + title + " not found.");
+        }
+    }
+
+    public void updateBook(String title, String newTitle, String author, double price, int quantity) {
+        if (newTitle == null || author == null || newTitle.isEmpty() || author.isEmpty() || price <= 0 || quantity <= 0) {
+            throw new IllegalArgumentException("Invalid input parameters for updating a book.");
+        }
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter title: ");
+                    String addTitle = scanner.nextLine();
+                    System.out.print("Enter author: ");
+                    String addAuthor = scanner.nextLine();
+                    System.out.print("Enter price: ");
+                    double addPrice = scanner.nextDouble();
+                    System.out.print("Enter quantity: ");
+                    int addQuantity = scanner.nextInt();
+                    system.addBook(addTitle, addAuthor, addPrice, addQuantity);
+                    break;
+                case 2:
+                    System.out.print("Enter title to remove: ");
+                    String removeTitle = scanner.nextLine();
+                    system.removeBook(removeTitle);
+                    break;
+                case 3:
+                    System.out.print("Enter title to update: ");
+                    String updateTitle = scanner.nextLine();
+                    System.out.print("Enter new title: ");
+                    String newTitle = scanner.nextLine();
+                    System.out.print("Enter author: ");
+                    String updateAuthor = scanner.nextLine();
+                    System.out.print("Enter price: ");
+                    double updatePrice = scanner.nextDouble();
+                    System.out.print("Enter quantity: ");
+                    int updateQuantity = scanner.nextInt();
+                    system.updateBook(updateTitle, newTitle, updateAuthor, updatePrice, updateQuantity);
+                    break;
