@@ -37,7 +37,24 @@ class Book {
 public void setPrice(double price) {
         this.price = price;
     }
+public int getQuantity() {
+        return quantity;
+    }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
+    }
+}
     
 public class BookInventorySystem {
     private ArrayList<Book> bookList = new ArrayList<>();
@@ -65,6 +82,61 @@ public class BookInventorySystem {
         if (newTitle == null || author == null || newTitle.isEmpty() || author.isEmpty() || price <= 0 || quantity <= 0) {
             throw new IllegalArgumentException("Invalid input parameters for updating a book.");
         }
+boolean updated = false;
+        for (Book book : bookList) {
+            if (book.getTitle().equals(title)) {
+                book.setTitle(newTitle);
+                book.setAuthor(author);
+                book.setPrice(price);
+                book.setQuantity(quantity);
+                updated = true;
+                break;
+            }
+        }
+        if (!updated) {
+            throw new IllegalArgumentException("Book with title " + title + " not found.");
+        }
+    }
+
+    public ArrayList<Book> searchByTitle(String title) {
+        ArrayList<Book> result = new ArrayList<>();
+        for (Book book : bookList) {
+            if (book.getTitle().contains(title)) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Book> searchByAuthor(String author) {
+        ArrayList<Book> result = new ArrayList<>();
+        for (Book book : bookList) {
+            if (book.getAuthor().contains(author)) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Book> getBookList() {
+        return bookList;
+    }
+
+    public static void main(String[] args) {
+        BookInventorySystem system = new BookInventorySystem();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Select an option:");
+            System.out.println("1. Add a book");
+            System.out.println("2. Remove a book");
+            System.out.println("3. Update a book");
+            System.out.println("4. Search books by title");
+            System.out.println("5. Search books by author");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character
 
             switch (choice) {
                 case 1:
@@ -96,3 +168,38 @@ public class BookInventorySystem {
                     int updateQuantity = scanner.nextInt();
                     system.updateBook(updateTitle, newTitle, updateAuthor, updatePrice, updateQuantity);
                     break;
+case 4:
+                    System.out.print("Enter title to search: ");
+                    String searchTitle = scanner.nextLine();
+                    ArrayList<Book> titleSearchResult = system.searchByTitle(searchTitle);
+                    if (titleSearchResult.isEmpty()) {
+                        System.out.println("No books found with title containing '" + searchTitle + "'.");
+                    } else {
+                        System.out.println("Books found with title containing '" + searchTitle + "':");
+                        for (Book book : titleSearchResult) {
+                            System.out.println(book);
+                        }
+                    }
+                    break;
+                case 5:
+                    System.out.print("Enter author to search: ");
+                    String searchAuthor = scanner.nextLine();
+                    ArrayList<Book> authorSearchResult = system.searchByAuthor(searchAuthor);
+                    if (authorSearchResult.isEmpty()) {
+                        System.out.println("No books found with author containing '" + searchAuthor + "'.");
+                    } else {
+                        System.out.println("Books found with author containing '" + searchAuthor + "':");
+                        for (Book book : authorSearchResult) {
+                            System.out.println(book);
+                        }
+                    }
+                    break;
+                case 6:
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+}
